@@ -1,0 +1,67 @@
+#include <iostream>
+using namespace std;
+
+class HeapSort {
+public:
+    void maxHeapify(int arr[], int i, int n) {
+        int left = 2 * i;
+        int right = 2 * i + 1;
+        int largest = i;
+
+        if (left <= n && arr[left] > arr[largest])
+            largest = left;
+        if (right <= n && arr[right] > arr[largest])
+            largest = right;
+
+        if (largest != i) {
+            swap(arr[i], arr[largest]);
+            maxHeapify(arr, largest, n);
+        }
+    }
+
+    void buildMaxHeap(int arr[], int n) {
+        for (int i = n / 2; i >= 1; i--) {
+            maxHeapify(arr, i, n);
+        }
+    }
+
+    void heapSort(int arr[], int n) {
+        buildMaxHeap(arr, n);
+        for (int i = n; i >= 2; i--) {
+            swap(arr[1], arr[i]);
+            maxHeapify(arr, 1, i - 1);
+        }
+    }
+
+    void acceptAndSortMarks() {
+        int n;
+        cout << "Enter total number of students: ";
+        cin >> n;
+
+        int marks[n + 1]; // +1 for 1-based indexing
+        cout << "Enter the marks of the students: " << endl;
+        for (int i = 1; i <= n; i++) {
+            cin >> marks[i];
+        }
+
+        heapSort(marks, n);
+
+        displayMarks(marks, n);
+    }
+
+    void displayMarks(int arr[], int n) {
+        cout << "Sorted Marks: " << endl;
+        for (int i = 1; i <= n; i++) {
+            cout << arr[i] << endl;
+        }
+
+        cout << "Minimum marks obtained: " << arr[1] << endl;
+        cout << "Maximum marks obtained: " << arr[n] << endl;
+    }
+};
+
+int main() {
+    HeapSort heapSort;
+    heapSort.acceptAndSortMarks();
+    return 0;
+}

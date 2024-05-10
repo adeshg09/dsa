@@ -1,0 +1,144 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+class employee{
+    int id;
+    string name;
+    string designation;
+    double salary;
+
+    public:
+        employee(){
+            this->id=0;
+            this->name="";
+            this->designation="";
+            this->salary=0.0;
+        }
+        employee(int id, string name, string designation, double salary){
+            this->id=id;
+            this->name=name;
+            this->designation=designation;
+            this->salary=salary;
+        }
+
+        void add();
+        void del();   
+        void display(); 
+};
+
+void employee::add(){
+    cout << "Enter employee id: ";
+    cin >> id;
+
+    cout << "Enter name: ";
+    cin >> name;
+
+    cout << "Enter designation: ";
+    cin >> designation;
+
+    cout << "Enter salary: ";
+    cin >> salary;
+
+    ofstream file("employees.txt", ios::app);
+
+    file << id << " " << name << " " << designation << " " << salary << endl;
+    file.close();
+}
+
+void employee::del(){
+    int emptobedel;
+    cout << "Enter the ID of the employee to be deleted: ";
+    cin >> emptobedel;
+    ifstream file("employees.txt");
+    ofstream temp("temp.txt");
+
+    
+    bool found = false;
+    while (file >> id >> name >> designation >> salary)
+    {
+        if (id != emptobedel)
+        {
+            temp << id << " " << name << " " << designation << " " << salary << endl;
+        }
+        else
+        {
+            found = true;
+        }
+    }
+
+    file.close();
+    temp.close();
+    remove("employees.txt");
+    rename("temp.txt", "employees.txt");
+    if (found)
+    {
+        cout << "Employee deleted successfully." << endl;
+    }
+    else
+    {
+        cout << "Employee not found." << endl;
+    }
+}
+
+void  employee::display(){
+    int emptobedis;
+    cout << "Enter the ID of the employee to display: ";
+    cin >>emptobedis;
+    ifstream file("employees.txt");
+    bool found = false;
+    while (file >> id >> name >>designation >> salary)
+    {
+        if (id == emptobedis)
+        {
+            found = true;
+            cout << "ID: " << id << endl;
+            cout << "Name: " << name << endl;
+            cout << "Designation: " << designation << endl;
+            cout << "Salary: " << salary << endl;
+            break;
+        }
+    }
+    file.close();
+    if (!found)
+    {
+        cout << "Employee not found." << endl;
+    }
+}
+
+int main()
+{
+    employee e;
+    int choice;
+    do
+    {
+        cout << "1. Add employee" << endl;
+        cout << "2. Delete employee" << endl;
+        cout << "3. Display employee" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            e.add();
+            break;
+        case 2:
+            e.del();
+            break;
+        case 3:
+            e.display();
+            break;
+        case 4:
+            cout << "Thank you for using the program!" << endl;
+            break;
+        default:
+            cout << "Invalid choice." << endl;
+        }
+    } while (choice != 4);
+    return 0;
+}
+
+

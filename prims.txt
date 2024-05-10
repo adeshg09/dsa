@@ -1,0 +1,104 @@
+#include <iostream>
+using namespace std;
+
+class Tree {
+private:
+    int branches;
+    int connections;
+    int adjacencyMatrix[20][20];
+    int visited[20];
+public:
+    void input();
+    void display();
+    void minimum();
+};
+
+void Tree::input() {
+    cout << "Enter the number of branches (max 20): ";
+    cin >> branches;
+    cout << "Enter the number of connections: ";
+    cin >> connections;
+
+    for(int i = 0; i < branches; i++) {
+        visited[i] = 0;
+        for(int j = 0; j < branches; j++) {
+            adjacencyMatrix[i][j] = 999; // Initialize with a large value
+        }
+    }
+
+    cout << "\nEnter the end branches of connections and their charges:\n";
+    for(int i = 0; i < connections; i++) {
+        int branch1, branch2, charge;
+        cout << "Connection " << i + 1 << ": ";
+        cin >> branch1 >> branch2 >> charge;
+        adjacencyMatrix[branch1 - 1][branch2 - 1] = adjacencyMatrix[branch2 - 1][branch1 - 1] = charge;
+    }
+}
+
+void Tree::display() {
+    cout << "\nAdjacency matrix:\n";
+    for(int i = 0; i < branches; i++) {
+        for(int j = 0; j < branches; j++) {
+            cout << adjacencyMatrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+void Tree::minimum() {
+    int total = 0;
+    visited[0] = 1;
+
+    for(int count = 0; count < (branches - 1); count++) {
+        int min = 999, p, q;
+        for(int i = 0; i < branches; i++) {
+            if(visited[i] == 1) {
+                for(int j = 0; j < branches; j++) {
+                    if(visited[j] != 1 && adjacencyMatrix[i][j] < min) {
+                        min = adjacencyMatrix[i][j];
+                        p = i;
+                        q = j;
+                    }
+                }
+            }
+        }
+        visited[p] = visited[q] = 1;
+        total += min;
+        cout << "Minimum cost connection: " << p + 1 << " -> " << q + 1 << " with charge: " << min << endl;
+    }
+    cout << "The minimum total cost of connections of all branches is: " << total << endl;
+}
+
+int main() {
+    int choice;
+    Tree t;
+
+    do {
+        cout << "==========PRIM'S ALGORITHM=================" << endl;
+        cout << "\n1. Input\n2. Display\n3. Minimum\n4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1:
+                cout << "**INPUT YOUR VALUES**" << endl;
+                t.input();
+                break;
+            case 2:
+                cout << "**DISPLAY THE CONTENTS**" << endl;
+                t.display();
+                break;
+            case 3:
+                cout << "**MINIMUM**" << endl;
+                t.minimum();
+                break;
+            case 4:
+                cout << "Exiting..." << endl;
+                break;
+            default:
+                cout << "Invalid choice! Please enter again." << endl;
+        }
+    } while(choice != 4);
+
+    return 0;
+}

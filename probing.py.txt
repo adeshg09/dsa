@@ -1,0 +1,115 @@
+def createTable():
+    size = int(input("Enter Size of Hash Table : "))
+    arr = [{"", -1}] * size
+    return arr
+
+def LinearProbing(arr, size):
+    while True:
+        print("1.Add Element  2.Delete Element  3.Search Element  4.Stop  5.Display")
+        choice = int(input("Enter Choice : "))
+        if choice == 1:
+            name = str(input("Enter Name : "))
+            phone = int(input("Enter Phone No. : "))
+            hash_val = phone % size
+            comparisons = 1
+            while arr[hash_val] != {"", -1}:
+                hash_val = (hash_val + 1) % size
+                comparisons += 1
+            arr[hash_val] = {name, phone}
+            print("Contact Added Successfully")
+        if choice == 2:
+            keyName = str(input("Enter Name to be deleted : "))
+            keyPhone = int(input("Enter Phone Number to be deleted : "))
+            hash_val = keyPhone % size
+            comparisons = 1
+            while arr[hash_val] != {keyName, keyPhone}:
+                hash_val = (hash_val + 1) % size
+                comparisons += 1
+            arr[hash_val] = {"", -1}
+            print("Deleted Successfully")
+        if choice == 3:
+            keyName = str(input("Enter Name to be searched : "))
+            keyPhone = int(input("Enter Phone Number to be searched : "))
+            hash_val = keyPhone % size
+            initial_val = hash_val
+            comparisons = 1
+            if arr[hash_val] == {keyName, keyPhone}:
+                print("Found with", comparisons, "comparisons")
+            else:
+                while arr[hash_val] != {keyName, keyPhone}:
+                    hash_val = (hash_val + 1) % size
+                    comparisons += 1
+                if hash_val == initial_val:
+                    print("Not Found after", comparisons, "comparisons")
+                else:
+                    print("Contact Found at index :", hash_val, "with", comparisons, "comparisons")
+        if choice == 4:
+            print("Thank You!")
+            return
+        if choice == 5:
+            print(arr)
+
+def QuadraticProbing(arr, size):
+    while True:
+        print("1.Add Element  2.Delete Element  3.Search Element  4.Stop  5.Display")
+        choice = int(input("Enter Choice : "))
+        if choice == 1:
+            name = str(input("Enter Name : "))
+            phone = int(input("Enter Phone No. : "))
+            hash_val = phone % size
+            i = 1
+            comparisons = 1
+            while arr[hash_val] != {"", -1}:
+                hash_val = (hash_val + (i * i)) % size
+                i += 1
+                comparisons += 1
+            arr[hash_val] = {name, phone}
+            print("Contact Added Successfully")
+        if choice == 2:
+            keyName = str(input("Enter Name to be deleted : "))
+            keyPhone = int(input("Enter Phone Number to be deleted : "))
+            hash_val = keyPhone % size
+            i = 1
+            comparisons = 1
+            while arr[hash_val] != {keyName, keyPhone}:
+                hash_val = (hash_val + (i * i)) % size
+                i += 1
+                comparisons += 1
+            arr[hash_val] = {"", -1}
+            print("Deleted Successfully")
+        if choice == 3:
+            keyName = str(input("Enter Name to be searched : "))
+            keyPhone = int(input("Enter Phone Number to be searched : "))
+            hash_val = keyPhone % size
+            initial_val = hash_val
+            i = 1
+            comparisons = 1
+            if arr[hash_val] == {keyName, keyPhone}:
+                print("Contact Found at index :", hash_val, "with", comparisons, "comparisons")
+            else:
+                while arr[hash_val] != {keyName, keyPhone}:
+                    hash_val = (hash_val + (i * i)) % size
+                    i += 1
+                    comparisons += 1
+                if hash_val == initial_val:
+                    print("Not Found after", comparisons, "comparisons")
+                else:
+                    print("Contact Found at index :", hash_val, "with", comparisons, "comparisons")
+        if choice == 4:
+            print("Thank You!")
+            return
+        if choice == 5:
+            print(arr)
+
+def main():
+    arr = createTable()
+    size = len(arr)
+    print("Which Resolution Solving Technique You want to use : ")
+    print("1.Linear Probing  2.Quadratic Probing")
+    choice = int(input("Enter Choice : "))
+    if choice == 1:
+        LinearProbing(arr, size)
+    if choice == 2:
+        QuadraticProbing(arr, size)
+
+main()
